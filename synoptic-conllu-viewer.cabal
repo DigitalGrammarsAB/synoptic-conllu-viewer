@@ -1,0 +1,16 @@
+name: synoptic-conllu-viewer
+version: 0
+author: Arianna Masciolini
+build-type: Simple
+extra-source-files: README.md
+cabal-version: >= 1.10
+
+executable synoptic-view
+  main-is: SynopticView.hs
+  build-depends:
+    base,
+    gf-ud,
+    extra,
+    threepenny-gui
+  default-language: Haskell2010
+  ghc-options: -main-is SynopticView
