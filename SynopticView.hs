@@ -1,7 +1,7 @@
 module SynopticView where
 
 import Data.Functor
-import Data.List.Extra (splitOn, lower, intercalate, (\\), transpose, isInfixOf)
+import Data.List.Extra (splitOn, lower, intercalate, (\\), transpose, isInfixOf, nub)
 import qualified Graphics.UI.Threepenny as UI
 import Graphics.UI.Threepenny.Core
 import UDConcepts hiding (prReducedUDSentence)
@@ -91,11 +91,11 @@ searchString `match` sents =  if '|' `elem` searchString
     then all 
             (\(l,s) -> l `isInfixOf` (prUDSentence 0) s) 
             (strings `zip` sents)
-    else all 
-            (\(l,s) -> l `elem` map udLEMMA (udWordLines s)) 
-            (lemmas `zip` sents)
+    else any 
+            (\(id,s) -> id == sentId s)
+            (ruleIds `zip` sents)
     where 
-        lemmas = init $ splitOn "_" searchString
+        ruleIds = splitOn "_" (head $ splitOn "__" searchString)
         strings = splitOn " | " searchString
 
 interleave :: [a] -> [a] -> [a]
@@ -111,8 +111,6 @@ prReducedUDSentence parts s = unlines (map prReducedUDWord (udWordLines s))
     pattern = map (/='_') parts
 
 conllus = [
-    "../data/descriptionsEng.conllu", 
-    "../data/descriptionsFin.conllu", 
-    "../data/descriptionsGer.conllu", 
-    "../data/descriptionsSwe.conllu"
+    "/home/harisont/Repos/concept-alignment/data/PUD_test/en.conllu", 
+    "/home/harisont/Repos/concept-alignment/data/PUD_test/sv.conllu"
     ]
